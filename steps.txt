@@ -1,0 +1,21 @@
+ONOS_HOST=http://localhost:8181/onos/v1 \
+  ONOS_USERNAME=karaf \
+  ONOS_PASSWORD=karaf \
+  terraform plan
+
+ONOS_HOST=http://localhost:8181/onos/v1 \
+  ONOS_USERNAME=karaf \
+  ONOS_PASSWORD=karaf \
+  terraform plan
+  
+
+ONOS_HOST=http://localhost:8181/onos/v1 \
+  ONOS_USERNAME=karaf \
+  ONOS_PASSWORD=karaf \
+  terraform plan
+
+HASHICUPS_HOST=http://localhost:19090 \
+  HASHICUPS_USERNAME=education \
+  HASHICUPS_PASSWORD=test123 \
+  terraform plan
+

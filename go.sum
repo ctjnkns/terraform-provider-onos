@@ -24,6 +24,8 @@ github.com/bufbuild/protocompile v0.4.0 h1:LbFKd2XowZvQ/kajzguUp2DC9UEIQhIq77fZZ
 github.com/bwesterb/go-ristretto v1.2.3/go.mod h1:fUIoIZaG73pV5biE2Blr2xEzDoMj7NFEuV9ekS419A0=
 github.com/cloudflare/circl v1.3.3 h1:fE/Qz0QdIGqeWfnwq0RE0R7MI51s0M2E4Ga9kq5AEMs=
 github.com/cloudflare/circl v1.3.3/go.mod h1:5XYMA4rFBvNIrhs50XuiBJ15vF2pZn4nnUKZrLbUZFA=
+github.com/ctjnkns/onos-client-go v0.0.0-20231024174849-166b0a23858c h1:WxjkzFIXLZTjwXpqj6HGm07mE9rngcd4i/WL0ziHNbo=
+github.com/ctjnkns/onos-client-go v0.0.0-20231024174849-166b0a23858c/go.mod h1:tLMl/fETeo/CkJHg6+2wn6w+3vyRrM1thz7Xn9rqivY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -94,8 +96,6 @@ github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0 h1:wcOKYwPI9IorAJEBLzgclh3x
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0/go.mod h1:qH/34G25Ugdj5FcM95cSoXzUgIbgfhVLXCcEcYaMwq8=
 github.com/hashicorp/terraform-plugin-testing v1.5.1 h1:T4aQh9JAhmWo4+t1A7x+rnxAJHCDIYW9kXyo4sVO92c=
 github.com/hashicorp/terraform-plugin-testing v1.5.1/go.mod h1:dg8clO6K59rZ8w9EshBmDp1CxTIPu3yA4iaDpX1h5u0=
-github.com/hashicorp/terraform-provider-scaffolding-framework v0.0.0-20231012160911-5df221f98c83 h1:ibmAeV6xTqVjIhLt886fv0Sp96Ii0wxwLWXfdpi/ShI=
-github.com/hashicorp/terraform-provider-scaffolding-framework v0.0.0-20231012160911-5df221f98c83/go.mod h1:KKk4FhrujZ0eHUAquwEdB2Cy7cXbEcgJOs9DVDfgXu0=
 github.com/hashicorp/terraform-registry-address v0.2.2 h1:lPQBg403El8PPicg/qONZJDC6YlgCVbWDtNmmZKtBno=
 github.com/hashicorp/terraform-registry-address v0.2.2/go.mod h1:LtwNbCihUoUZ3RYriyS2wF/lGPB6gF9ICLRtuDk7hSo=
 github.com/hashicorp/terraform-svchost v0.1.1 h1:EZZimZ1GxdqFRinZ1tpJwVxxt49xc/S52uzrw4x0jKQ=
