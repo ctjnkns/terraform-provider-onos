@@ -3,7 +3,6 @@ module terraform-provider-onos
 go 1.19
 
 require (
-	github.com/ctjnkns/onos-client-go v0.0.0-20231024174849-166b0a23858c
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
 	github.com/hashicorp/terraform-plugin-framework v1.4.1
 	github.com/hashicorp/terraform-plugin-go v0.19.0
