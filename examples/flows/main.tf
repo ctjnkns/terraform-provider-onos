@@ -8,8 +8,12 @@ terraform {
 
 provider "onos" {
   host     = "http://localhost:8181"
-  username = "education"
-  password = "test123"
+  username = "onos"
+  password = "rocks"
 }
 
 data "onos_flows" "edu" {}
+
+output "edu_flows" {
+  value = data.onos_flows.edu
+}

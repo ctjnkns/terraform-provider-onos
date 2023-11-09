@@ -26,6 +26,13 @@ type onosProviderModel struct {
 	Password types.String `tfsdk:"password"`
 }
 
+type onosClient struct {
+	HTTPClient *http.Client
+	Host       string
+	Username   string
+	Password   string
+}
+
 // New is a helper function to simplify provider server and testing implementation.
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
@@ -172,7 +179,7 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	// Make the Onos client available during DataSource and Resource
 	// type Configure methods.
 
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &onosClient{&http.Client{Timeout: 10 * time.Second}, host, username, password}
 
 	resp.DataSourceData = client
 	resp.ResourceData = client
