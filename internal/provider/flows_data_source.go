@@ -22,6 +22,13 @@ func NewFlowsDataSource() datasource.DataSource {
 	return &flowsDataSource{}
 }
 
+type onosClient struct {
+	HTTPClient *http.Client
+	Host       string
+	Username   string
+	Password   string
+}
+
 // flowsDataSource is the data source implementation.
 type flowsDataSource struct {
 	client *onosClient
