@@ -2,7 +2,9 @@ package provider
 
 import (
 	"context"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -22,6 +24,13 @@ type onosProviderModel struct {
 	Host     types.String `tfsdk:"host"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
+}
+
+type onosClient struct {
+	HTTPClient *http.Client
+	Host       string
+	Username   string
+	Password   string
 }
 
 // New is a helper function to simplify provider server and testing implementation.
@@ -164,11 +173,23 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 		return
 	}
 
+	// Create a new Onos client using the configuration values
+	//client := &http.Client{Timeout: 10 * time.Second}
+
+	// Make the Onos client available during DataSource and Resource
+	// type Configure methods.
+
+	client := &http.Client{Timeout: 10 * time.Second}
+
+	resp.DataSourceData = client
+	resp.ResourceData = client
 }
 
 // DataSources defines the data sources implemented in the provider.
-func (p *hashicupsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return nil
+func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+	return []func() datasource.DataSource{
+		NewFlowsDataSource,
+	}
 }
 
 // Resources defines the resources implemented in the provider.
