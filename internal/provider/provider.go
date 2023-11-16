@@ -179,7 +179,7 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	// Make the Onos client available during DataSource and Resource
 	// type Configure methods.
 
-	client := &onosClient{&http.Client{Timeout: 10 * time.Second}, host, username, password}
+	client := &http.Client{Timeout: 10 * time.Second}
 
 	resp.DataSourceData = client
 	resp.ResourceData = client

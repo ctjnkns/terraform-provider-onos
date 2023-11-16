@@ -12,9 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+const HostURL string = "http://localhost:8181/onos/v1/flows"
+
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource = &flowsDataSource{}
+	_ datasource.DataSource              = &flowsDataSource{}
+	_ datasource.DataSourceWithConfigure = &flowsDataSource{}
 )
 
 // NewFlowsDataSource is a helper function to simplify the provider implementation.
@@ -22,38 +25,77 @@ func NewFlowsDataSource() datasource.DataSource {
 	return &flowsDataSource{}
 }
 
-type onosClient struct {
-	HTTPClient *http.Client
-	Host       string
-	Username   string
-	Password   string
-}
-
 // flowsDataSource is the data source implementation.
 type flowsDataSource struct {
-	client *onosClient
+	client *http.Client
 }
 
-// flowsModel maps flows schema data.
+type flowsDataSourceUNMARSHAL struct {
+	Flows []flowsUNMARSHAL `tfsdk:"flows"`
+}
+
+type flowsUNMARSHAL struct {
+	AppID       string                  `tfsdk:"appid"`
+	Bytes       int                     `tfsdk:"bytes"`
+	DeviceID    string                  `tfsdk:"deviceid"`
+	GroupID     int                     `tfsdk:"groupid"`
+	ID          string                  `tfsdk:"id"`
+	IsPermanent bool                    `tfsdk:"ispermanent"`
+	LastSeen    int                     `tfsdk:"lastSeen"`
+	Life        int                     `tfsdk:"life"`
+	LiveType    string                  `tfsdk:"livetype"`
+	Packets     int                     `tfsdk:"packets"`
+	Priority    int                     `tfsdk:"priority"`
+	State       string                  `tfsdk:"state"`
+	TableID     int                     `tfsdk:"tableid"`
+	TableName   string                  `tfsdk:"tableName"`
+	Timeout     int                     `tfsdk:"timeout"`
+	Selector    flowsSelectorUNMARSHAL  `tfsdk:"selector"`
+	Treatment   flowsTreatmentUNMARSHAL `tfsdk:"treatment"`
+}
+
+// flowsSelectorUNMARSHAL maps flow ingredients data
+type flowsSelectorUNMARSHAL struct {
+	Criteria []flowsSelectorCriteriaUNMARSHAL `tfsdk:"criteria"`
+}
+
+type flowsSelectorCriteriaUNMARSHAL struct {
+	EthType string `tfsdk:"ethtype"`
+	Mac     string `tfsdk:"mac"`
+	Port    int    `tfsdk:"port"`
+	Type    string `tfsdk:"type"`
+}
+
+type flowsTreatmentUNMARSHAL struct {
+	ClearDeferred bool                                  `tfsdk:"cleardeferred"`
+	Deferred      []flowsTreatmentInstructionsUNMARSHAL `tfsdk:"deferred"` //for deferred instructions
+	Instructions  []flowsTreatmentInstructionsUNMARSHAL `tfsdk:"instructions"`
+}
+
+type flowsTreatmentInstructionsUNMARSHAL struct {
+	Port string `tfsdk:"port"`
+	Type string `tfsdk:"type"`
+}
+
 type flowsDataSourceModel struct {
 	Flows []flowsModel `tfsdk:"flows"`
 }
 
 type flowsModel struct {
-	AppID       types.String        `tfsdk:"appId"`
+	AppID       types.String        `tfsdk:"appid"`
 	Bytes       types.Int64         `tfsdk:"bytes"`
-	DeviceID    types.String        `tfsdk:"deviceId"`
-	GroupID     types.Int64         `tfsdk:"groupId"`
+	DeviceID    types.String        `tfsdk:"deviceid"`
+	GroupID     types.Int64         `tfsdk:"groupid"`
 	ID          types.String        `tfsdk:"id"`
-	IsPermanent types.Bool          `tfsdk:"isPermanent"`
-	LastSeen    types.Int64         `tfsdk:"lastSeen"`
+	IsPermanent types.Bool          `tfsdk:"ispermanent"`
+	LastSeen    types.Int64         `tfsdk:"lastseen"`
 	Life        types.Int64         `tfsdk:"life"`
-	LiveType    types.String        `tfsdk:"liveType"`
+	LiveType    types.String        `tfsdk:"livetype"`
 	Packets     types.Int64         `tfsdk:"packets"`
 	Priority    types.Int64         `tfsdk:"priority"`
 	State       types.String        `tfsdk:"state"`
-	TableID     types.Int64         `tfsdk:"tableId"`
-	TableName   types.String        `tfsdk:"tableName"`
+	TableID     types.Int64         `tfsdk:"tableid"`
+	TableName   types.String        `tfsdk:"tablename"`
 	Timeout     types.Int64         `tfsdk:"timeout"`
 	Selector    flowsSelectorModel  `tfsdk:"selector"`
 	Treatment   flowsTreatmentModel `tfsdk:"treatment"`
@@ -65,14 +107,14 @@ type flowsSelectorModel struct {
 }
 
 type flowsSelectorCriteriaModel struct {
-	EthType types.String `tfsdk:"ethType"`
+	EthType types.String `tfsdk:"ethtype"`
 	Mac     types.String `tfsdk:"mac"`
 	Port    types.Int64  `tfsdk:"port"`
 	Type    types.String `tfsdk:"type"`
 }
 
 type flowsTreatmentModel struct {
-	ClearDeferred bool                              `tfsdk:"clearDeferred"`
+	ClearDeferred types.Bool                        `tfsdk:"cleardeferred"`
 	Deferred      []flowsTreatmentInstructionsModel `tfsdk:"deferred"` //for deferred instructions
 	Instructions  []flowsTreatmentInstructionsModel `tfsdk:"instructions"`
 }
@@ -95,31 +137,31 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"appId": schema.StringAttribute{
+						"appid": schema.StringAttribute{
 							Computed: true,
 						},
 						"bytes": schema.Int64Attribute{
 							Computed: true,
 						},
-						"deviceId": schema.StringAttribute{
+						"deviceid": schema.StringAttribute{
 							Computed: true,
 						},
-						"groupId": schema.Int64Attribute{
+						"groupid": schema.Int64Attribute{
 							Computed: true,
 						},
 						"id": schema.StringAttribute{
 							Computed: true,
 						},
-						"isPermanent": schema.BoolAttribute{
+						"ispermanent": schema.BoolAttribute{
 							Computed: true,
 						},
-						"lastSeen": schema.Int64Attribute{
+						"lastseen": schema.Int64Attribute{
 							Computed: true,
 						},
 						"life": schema.Int64Attribute{
 							Computed: true,
 						},
-						"liveType": schema.StringAttribute{
+						"livetype": schema.StringAttribute{
 							Computed: true,
 						},
 						"packets": schema.Int64Attribute{
@@ -131,10 +173,10 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 						"state": schema.StringAttribute{
 							Computed: true,
 						},
-						"tableId": schema.Int64Attribute{
+						"tableid": schema.Int64Attribute{
 							Computed: true,
 						},
-						"tableName": schema.StringAttribute{
+						"tablename": schema.StringAttribute{
 							Computed: true,
 						},
 						"timeout": schema.Int64Attribute{
@@ -148,7 +190,7 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 										Computed: true,
 										NestedObject: schema.NestedAttributeObject{
 											Attributes: map[string]schema.Attribute{
-												"ethType": schema.StringAttribute{
+												"ethtype": schema.StringAttribute{
 													Computed: true,
 												},
 												"mac": schema.StringAttribute{
@@ -170,7 +212,7 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 							Computed: true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"clearDeferred": schema.BoolAttribute{
+									"cleardeferred": schema.BoolAttribute{
 										Computed: true,
 									},
 									"deferred": schema.ListNestedAttribute{
@@ -215,7 +257,7 @@ func (d *flowsDataSource) Configure(ctx context.Context, req datasource.Configur
 		return
 	}
 
-	client, ok := req.ProviderData.(*onosClient)
+	client, ok := req.ProviderData.(*http.Client)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -233,15 +275,13 @@ func (d *flowsDataSource) Configure(ctx context.Context, req datasource.Configur
 // Read refreshes the Terraform state with the latest data.
 func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 
-	var state flowsDataSourceModel
-
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/onos/v1/flows", d.client.Host), nil)
+	httpReq, err := http.NewRequest("GET", HostURL, nil)
 	if err != nil {
 		fmt.Println(nil)
 	}
-	req.SetBasicAuth(d.client.Username, d.client.Password)
+	httpReq.SetBasicAuth("onos", "rocks")
 
-	res, err := d.client.HTTPClient.do(req)
+	res, err := d.client.Do(httpReq)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -255,7 +295,7 @@ func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 	if res.StatusCode != http.StatusOK {
 		fmt.Println("status: %d, body: %s", res.StatusCode, body)
 	}
-	flows := flowsDataSourceModel{}
+	flows := flowsDataSourceUNMARSHAL{}
 
 	err = json.Unmarshal(body, &flows)
 	if err != nil {
@@ -265,7 +305,6 @@ func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 	var state flowsDataSourceModel
 
 	for _, flow := range flows.Flows {
-		fmt.Println(flow)
 		flowState := flowsModel{
 			AppID:       types.StringValue(flow.AppID),
 			Bytes:       types.Int64Value(int64(flow.Bytes)),
@@ -291,7 +330,6 @@ func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 				Instructions:  []flowsTreatmentInstructionsModel{},
 			},
 		}
-
 		for _, criteria := range flow.Selector.Criteria {
 			flowState.Selector.Criteria = append(flowState.Selector.Criteria, flowsSelectorCriteriaModel{
 				EthType: types.StringValue(criteria.EthType),
@@ -313,7 +351,6 @@ func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 				Type: types.StringValue(deferred.Type),
 			})
 		}
-		//fmt.Println("This state:", state)
 		state.Flows = append(state.Flows, flowState)
 	}
 	diags := resp.State.Set(ctx, &state)
