@@ -182,62 +182,58 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 						"timeout": schema.Int64Attribute{
 							Computed: true,
 						},
-						"selector": schema.ListNestedAttribute{
+						"selector": schema.SingleNestedAttribute{
 							Computed: true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"criteria": schema.ListNestedAttribute{
-										Computed: true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"ethtype": schema.StringAttribute{
-													Computed: true,
-												},
-												"mac": schema.StringAttribute{
-													Computed: true,
-												},
-												"port": schema.Int64Attribute{
-													Computed: true,
-												},
-												"type": schema.StringAttribute{
-													Computed: true,
-												},
+							Attributes: map[string]schema.Attribute{
+								"criteria": schema.ListNestedAttribute{
+									Computed: true,
+									NestedObject: schema.NestedAttributeObject{
+										Attributes: map[string]schema.Attribute{
+											"ethtype": schema.StringAttribute{
+												Computed: true,
+											},
+											"mac": schema.StringAttribute{
+												Computed: true,
+											},
+											"port": schema.Int64Attribute{
+												Computed: true,
+											},
+											"type": schema.StringAttribute{
+												Computed: true,
 											},
 										},
 									},
 								},
 							},
 						},
-						"treatment": schema.ListNestedAttribute{
+						"treatment": schema.SingleNestedAttribute{
 							Computed: true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"cleardeferred": schema.BoolAttribute{
-										Computed: true,
-									},
-									"deferred": schema.ListNestedAttribute{
-										Computed: true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"port": schema.StringAttribute{
-													Computed: true,
-												},
-												"type": schema.StringAttribute{
-													Computed: true,
-												},
+							Attributes: map[string]schema.Attribute{
+								"cleardeferred": schema.BoolAttribute{
+									Computed: true,
+								},
+								"deferred": schema.ListNestedAttribute{
+									Computed: true,
+									NestedObject: schema.NestedAttributeObject{
+										Attributes: map[string]schema.Attribute{
+											"port": schema.StringAttribute{
+												Computed: true,
+											},
+											"type": schema.StringAttribute{
+												Computed: true,
 											},
 										},
 									},
-									"instructions": schema.ListNestedAttribute{
-										Computed: true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"port": schema.StringAttribute{
-													Computed: true,
-												},
-												"type": schema.StringAttribute{
-													Computed: true,
-												},
+								},
+								"instructions": schema.ListNestedAttribute{
+									Computed: true,
+									NestedObject: schema.NestedAttributeObject{
+										Attributes: map[string]schema.Attribute{
+											"port": schema.StringAttribute{
+												Computed: true,
+											},
+											"type": schema.StringAttribute{
+												Computed: true,
 											},
 										},
 									},
