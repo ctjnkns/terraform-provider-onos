@@ -186,10 +186,8 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 }
 
 // DataSources defines the data sources implemented in the provider.
-func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewFlowsDataSource,
-	}
+func (p *hashicupsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+	return nil
 }
 
 // Resources defines the resources implemented in the provider.
