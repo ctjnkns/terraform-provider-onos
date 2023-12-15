@@ -2,10 +2,9 @@ package provider
 
 import (
 	"context"
-	"net/http"
 	"os"
-	"time"
 
+	"github.com/ctjnkns/onosclient"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -24,13 +23,6 @@ type onosProviderModel struct {
 	Host     types.String `tfsdk:"host"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
-}
-
-type onosClient struct {
-	HTTPClient *http.Client
-	Host       string
-	Username   string
-	Password   string
 }
 
 // New is a helper function to simplify provider server and testing implementation.
@@ -85,7 +77,6 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 
 	// If practitioner provided a configuration value for any of the
 	// attributes, it must be a known value.
-
 	if config.Host.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("host"),
@@ -176,11 +167,19 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	// Create a new Onos client using the configuration values
 	//client := &http.Client{Timeout: 10 * time.Second}
 
+	client, err := onosclient.NewClient(host, username, password)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to Create HashiCups API Client",
+			"An unexpected error occurred when creating the HashiCups API client. "+
+				"If the error is not clear, please contact the provider developers.\n\n"+
+				"HashiCups Client Error: "+err.Error(),
+		)
+		return
+	}
+
 	// Make the Onos client available during DataSource and Resource
 	// type Configure methods.
-
-	client := &http.Client{Timeout: 10 * time.Second}
-
 	resp.DataSourceData = client
 	resp.ResourceData = client
 }
@@ -195,6 +194,6 @@ func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSo
 // Resources defines the resources implemented in the provider.
 func (p *onosProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewIntentResource,
+		//NewIntentResource,
 	}
 }

@@ -2,11 +2,9 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
+	"github.com/ctjnkns/onosclient"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -27,54 +25,7 @@ func NewFlowsDataSource() datasource.DataSource {
 
 // flowsDataSource is the data source implementation.
 type flowsDataSource struct {
-	client *http.Client
-}
-
-type flowsDataSourceUnmarshal struct {
-	Flows []flowsUnmarshal `tfsdk:"flows"`
-}
-
-type flowsUnmarshal struct {
-	AppID       string                  `tfsdk:"appid"`
-	Bytes       int                     `tfsdk:"bytes"`
-	DeviceID    string                  `tfsdk:"deviceid"`
-	GroupID     int                     `tfsdk:"groupid"`
-	ID          string                  `tfsdk:"id"`
-	IsPermanent bool                    `tfsdk:"ispermanent"`
-	LastSeen    int                     `tfsdk:"lastseen"`
-	Life        int                     `tfsdk:"life"`
-	LiveType    string                  `tfsdk:"livetype"`
-	Packets     int                     `tfsdk:"packets"`
-	Priority    int                     `tfsdk:"priority"`
-	State       string                  `tfsdk:"state"`
-	TableID     int                     `tfsdk:"tableid"`
-	TableName   string                  `tfsdk:"tablename"`
-	Timeout     int                     `tfsdk:"timeout"`
-	Selector    flowsSelectorUnmarshal  `tfsdk:"selector"`
-	Treatment   flowsTreatmentUnmarshal `tfsdk:"treatment"`
-}
-
-// flowsSelectorUnmarshal maps flow ingredients data
-type flowsSelectorUnmarshal struct {
-	Criteria []flowsSelectorCriteriaUnmarshal `tfsdk:"criteria"`
-}
-
-type flowsSelectorCriteriaUnmarshal struct {
-	EthType string `tfsdk:"ethtype"`
-	Mac     string `tfsdk:"mac"`
-	Port    int    `tfsdk:"port"`
-	Type    string `tfsdk:"type"`
-}
-
-type flowsTreatmentUnmarshal struct {
-	ClearDeferred bool                                  `tfsdk:"cleardeferred"`
-	Deferred      []flowsTreatmentInstructionsUnmarshal `tfsdk:"deferred"` //for deferred instructions
-	Instructions  []flowsTreatmentInstructionsUnmarshal `tfsdk:"instructions"`
-}
-
-type flowsTreatmentInstructionsUnmarshal struct {
-	Port string `tfsdk:"port"`
-	Type string `tfsdk:"type"`
+	client *onosclient.Client
 }
 
 type flowsDataSourceModel struct {
@@ -253,7 +204,7 @@ func (d *flowsDataSource) Configure(ctx context.Context, req datasource.Configur
 		return
 	}
 
-	client, ok := req.ProviderData.(*http.Client)
+	client, ok := req.ProviderData.(*onosclient.Client)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -270,37 +221,17 @@ func (d *flowsDataSource) Configure(ctx context.Context, req datasource.Configur
 
 // Read refreshes the Terraform state with the latest data.
 func (d *flowsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-
-	httpReq, err := http.NewRequest("GET", HostURL, nil)
-	if err != nil {
-		fmt.Println(nil)
-	}
-	httpReq.SetBasicAuth("onos", "rocks")
-
-	res, err := d.client.Do(httpReq)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	if res.StatusCode != http.StatusOK {
-		fmt.Println("status: %d, body: %s", res.StatusCode, body)
-	}
-	flows := flowsDataSourceUnmarshal{}
-
-	err = json.Unmarshal(body, &flows)
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	var state flowsDataSourceModel
+	flows, err := d.client.GetFlows()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to Read Onos Flows",
+			err.Error(),
+		)
+		return
+	}
 
-	for _, flow := range flows.Flows {
+	for _, flow := range flows.Flow {
 		flowState := flowsModel{
 			AppID:       types.StringValue(flow.AppID),
 			Bytes:       types.Int64Value(int64(flow.Bytes)),
