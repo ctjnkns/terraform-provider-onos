@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -67,6 +68,9 @@ func (p *onosProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp 
 }
 
 func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+
+	tflog.Info(ctx, "Configuring Onos client")
+
 	// Retrieve provider data from configuration
 	var config onosProviderModel
 	diags := req.Config.Get(ctx, &config)
@@ -164,6 +168,13 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "onos_host", host)
+	ctx = tflog.SetField(ctx, "onos_username", username)
+	ctx = tflog.SetField(ctx, "onos_password", password)
+	ctx = tflog.MaskFieldValuesWithFieldKeys(ctx, "onos_password")
+
+	tflog.Debug(ctx, "Creating Onos client")
+
 	// Create a new Onos client using the configuration values
 	//client := &http.Client{Timeout: 10 * time.Second}
 
@@ -182,6 +193,9 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	// type Configure methods.
 	resp.DataSourceData = client
 	resp.ResourceData = client
+
+	tflog.Info(ctx, "Configured Onos client", map[string]any{"success": true})
+
 }
 
 // DataSources defines the data sources implemented in the provider.
