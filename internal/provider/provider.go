@@ -208,6 +208,6 @@ func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSo
 // Resources defines the resources implemented in the provider.
 func (p *onosProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		//NewIntentResource,
+		NewIntentResource,
 	}
 }
