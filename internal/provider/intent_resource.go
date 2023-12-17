@@ -343,4 +343,5 @@ func (r *intentResource) ImportState(ctx context.Context, req resource.ImportSta
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
 }
