@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/ctjnkns/onosclient"
@@ -15,8 +16,9 @@ const IntentsURL string = "http://localhost:8181/onos/v1/intents"
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ resource.Resource              = &intentResource{}
-	_ resource.ResourceWithConfigure = &intentResource{}
+	_ resource.Resource                = &intentResource{}
+	_ resource.ResourceWithConfigure   = &intentResource{}
+	_ resource.ResourceWithImportState = &intentResource{}
 )
 
 // intentResource is the resource implementation.
@@ -199,6 +201,7 @@ func (r *intentResource) Create(ctx context.Context, req resource.CreateRequest,
 
 // Read refreshes the Terraform state with the latest data.
 func (r *intentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+
 	// Get current state
 	var state intentResourceModel
 	diags := req.State.Get(ctx, &state)
@@ -312,6 +315,32 @@ func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest,
 			"Error Deleting onos intent",
 			"Could not delete intent, unexpected error: "+err.Error(),
 		)
+		return
+	}
+}
+
+func (r *intentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// Retrieve import ID and save to id attribute
+	idParts := strings.Split(req.ID, ",")
+
+	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("Expected import identifier with format: AppID,Key. Got: %q", req.ID),
+		)
+		return
+	}
+
+	// Create the intent model with the passed in import string data
+	var plan intentResourceModel
+	plan.Intent = intentModel{
+		AppID: types.StringValue(idParts[0]),
+		Key:   types.StringValue(idParts[1]),
+	}
+	// Set the resp
+	diags := resp.State.Set(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 }
