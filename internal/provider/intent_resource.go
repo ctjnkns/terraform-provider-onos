@@ -262,12 +262,12 @@ func (r *intentResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Updating Onos Intent",
-			"Could not update order, unexpected error: "+err.Error(),
+			"Could not update intent, unexpected error: "+err.Error(),
 		)
 		return
 	}
 
-	// Fetch updated items from GetOrder as UpdateOrder items are not
+	// Fetch updated items from Getintent as Updateintent items are not
 	// populated.
 	// NA
 
@@ -291,6 +291,27 @@ func (r *intentResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 }
 
-// Delete deletes the resource and removes the Terraform state on success.
 func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	// Retrieve values from state
+	var state intentResourceModel
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	//convert to model
+	intent := onosclient.Intent{
+		AppID: string(state.Intent.AppID.ValueString()),
+		Key:   string(state.Intent.Key.ValueString()),
+	}
+
+	// Delete existing intent
+	err := r.client.DeleteIntent(intent)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Deleting onos intent",
+			"Could not delete intent, unexpected error: "+err.Error(),
+		)
+		return
+	}
 }
