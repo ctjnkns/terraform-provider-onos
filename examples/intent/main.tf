@@ -13,6 +13,17 @@ provider "onos" {
   password = "rocks"
 }
 
+resource "onos_intent" "edu" {
+  intent = {
+    appid    = "org.onosproject.cli"
+    key      = "0x100006"
+    type     = "HostToHostIntent"
+    priority = 100
+    one      = "00:00:00:00:00:02/None"
+    two      = "00:00:00:00:00:88/None"
+  }
+}
+
 
 resource "onos_intent" "io" {
   intent = {
@@ -23,6 +34,10 @@ resource "onos_intent" "io" {
     one      = "00:00:00:00:00:01/None"
     two      = "00:00:00:00:00:02/None"
   }
+}
+
+output "edu_intent" {
+  value = onos_intent.edu
 }
 
 output "io_intent" {
