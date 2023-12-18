@@ -2,16 +2,16 @@ package provider
 
 import (
 	"context"
-	"net/http"
 	"os"
-	"time"
 
+	"github.com/ctjnkns/onosclient"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -24,13 +24,6 @@ type onosProviderModel struct {
 	Host     types.String `tfsdk:"host"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
-}
-
-type onosClient struct {
-	HTTPClient *http.Client
-	Host       string
-	Username   string
-	Password   string
 }
 
 // New is a helper function to simplify provider server and testing implementation.
@@ -75,6 +68,9 @@ func (p *onosProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp 
 }
 
 func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+
+	tflog.Info(ctx, "Configuring Onos client")
+
 	// Retrieve provider data from configuration
 	var config onosProviderModel
 	diags := req.Config.Get(ctx, &config)
@@ -85,7 +81,6 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 
 	// If practitioner provided a configuration value for any of the
 	// attributes, it must be a known value.
-
 	if config.Host.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("host"),
@@ -173,16 +168,34 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "onos_host", host)
+	ctx = tflog.SetField(ctx, "onos_username", username)
+	ctx = tflog.SetField(ctx, "onos_password", password)
+	ctx = tflog.MaskFieldValuesWithFieldKeys(ctx, "onos_password")
+
+	tflog.Debug(ctx, "Creating Onos client")
+
 	// Create a new Onos client using the configuration values
 	//client := &http.Client{Timeout: 10 * time.Second}
 
+	client, err := onosclient.NewClient(host, username, password)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to Create HashiCups API Client",
+			"An unexpected error occurred when creating the HashiCups API client. "+
+				"If the error is not clear, please contact the provider developers.\n\n"+
+				"HashiCups Client Error: "+err.Error(),
+		)
+		return
+	}
+
 	// Make the Onos client available during DataSource and Resource
 	// type Configure methods.
-
-	client := &http.Client{Timeout: 10 * time.Second}
-
 	resp.DataSourceData = client
 	resp.ResourceData = client
+
+	tflog.Info(ctx, "Configured Onos client", map[string]any{"success": true})
+
 }
 
 // DataSources defines the data sources implemented in the provider.
@@ -194,5 +207,7 @@ func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSo
 
 // Resources defines the resources implemented in the provider.
 func (p *onosProvider) Resources(_ context.Context) []func() resource.Resource {
-	return nil
+	return []func() resource.Resource{
+		NewIntentResource,
+	}
 }
