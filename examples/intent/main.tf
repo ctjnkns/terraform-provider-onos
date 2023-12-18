@@ -24,7 +24,6 @@ resource "onos_intent" "edu" {
   }
 }
 
-
 resource "onos_intent" "io" {
   intent = {
     appid    = "org.onosproject.cli"
@@ -36,9 +35,12 @@ resource "onos_intent" "io" {
   }
 }
 
+
+
 output "edu_intent" {
   value = onos_intent.edu
 }
+
 
 output "io_intent" {
   value = onos_intent.io
