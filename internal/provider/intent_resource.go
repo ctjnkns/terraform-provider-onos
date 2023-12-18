@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/ctjnkns/onosclient"
@@ -16,9 +15,9 @@ const IntentsURL string = "http://localhost:8181/onos/v1/intents"
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ resource.Resource                = &intentResource{}
-	_ resource.ResourceWithConfigure   = &intentResource{}
-	_ resource.ResourceWithImportState = &intentResource{}
+	_ resource.Resource              = &intentResource{}
+	_ resource.ResourceWithConfigure = &intentResource{}
+	//_ resource.ResourceWithImportState = &intentResource{}
 )
 
 // intentResource is the resource implementation.
@@ -319,8 +318,10 @@ func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 }
 
+/*
 func (r *intentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Retrieve import ID and save to id attribute
+	// Pass in the app id and key, e.g. terraform import onos_intent.edu "org.onosproject.cli,0x100005"
 	idParts := strings.Split(req.ID, ",")
 
 	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
@@ -345,3 +346,4 @@ func (r *intentResource) ImportState(ctx context.Context, req resource.ImportSta
 	}
 
 }
+*/
