@@ -24,6 +24,11 @@ resource "onos_intent" "edu" {
   }
 }
 
+output "edu_intent" {
+  value = onos_intent.edu
+}
+
+
 resource "onos_intent" "io" {
   intent = {
     appid    = "org.onosproject.cli"
@@ -35,13 +40,22 @@ resource "onos_intent" "io" {
   }
 }
 
-
-
-output "edu_intent" {
-  value = onos_intent.edu
+output "io_intent" {
+  value = onos_intent.io
 }
 
 
-output "io_intent" {
-  value = onos_intent.io
+resource "onos_intent" "net" {
+  intent = {
+    appid    = "org.onosproject.cli"
+    key      = "0x300009"
+    type     = "HostToHostIntent"
+    priority = 100
+    one      = "00:00:00:00:00:01/None"
+    two      = "00:00:00:00:00:99/None"
+  }
+}
+
+output "net_intent" {
+  value = onos_intent.net
 }
