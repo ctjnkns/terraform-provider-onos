@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/ctjnkns/onosclient"
@@ -318,7 +319,6 @@ func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 }
 
-/*
 func (r *intentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Retrieve import ID and save to id attribute
 	// Pass in the app id and key, e.g. terraform import onos_intent.edu "org.onosproject.cli,0x100005"
@@ -346,4 +346,3 @@ func (r *intentResource) ImportState(ctx context.Context, req resource.ImportSta
 	}
 
 }
-*/
