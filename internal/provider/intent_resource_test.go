@@ -50,9 +50,8 @@ func TestAccIntentResource(t *testing.T) {
 					// API, therefore there is no value for it during import.
 					ImportStateVerifyIgnore: []string{"last_updated"},
 				},
+				// Update and Read testing
 			*/
-			// Update and Read testing
-
 			{
 				Config: providerConfig + `
 				resource "onos_intent" "test" {
