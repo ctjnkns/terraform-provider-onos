@@ -27,6 +27,7 @@ type hostsDataSource struct {
 }
 
 type hostsDataSourceModel struct {
+	ID    types.String `tfsdk:"id"`
 	Hosts []hostsModel `tfsdk:"hosts"`
 }
 
@@ -56,6 +57,9 @@ func (d *hostsDataSource) Metadata(_ context.Context, req datasource.MetadataReq
 func (d *hostsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
+			},
 			"hosts": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
@@ -167,6 +171,9 @@ func (d *hostsDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		}
 		state.Hosts = append(state.Hosts, hostState)
 	}
+
+	state.ID = types.StringValue("placeholder")
+
 	diags := resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
