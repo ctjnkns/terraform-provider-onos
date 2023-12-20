@@ -32,6 +32,7 @@ func NewIntentResource() resource.Resource {
 }
 
 type intentResourceModel struct {
+	ID          types.String `tfsdk:"id"`
 	Intent      intentModel  `tfsdk:"intent"`
 	LastUpdated types.String `tfsdk:"last_updated"`
 }
@@ -92,6 +93,14 @@ func (r *intentResource) Metadata(_ context.Context, req resource.MetadataReques
 func (r *intentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
+				/*
+					PlanModifiers: []planmodifier.String{
+						stringplanmodifier.UseStateForUnknown(),
+					},
+				*/
+			},
 			"last_updated": schema.StringAttribute{
 				Computed: true,
 			},
@@ -180,6 +189,8 @@ func (r *intentResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 	// Map response body to schema and populate Computed attribute values
+	plan.ID = types.StringValue(intent.ID)
+
 	plan.Intent = intentModel{
 		ID:       types.StringValue(intent.ID),
 		AppID:    types.StringValue(intent.AppID),
@@ -222,6 +233,7 @@ func (r *intentResource) Read(ctx context.Context, req resource.ReadRequest, res
 	} else {
 
 		// Overwrite intent with refreshed state
+		state.ID = types.StringValue(intent.ID)
 		state.Intent = intentModel{
 			ID:       types.StringValue(intent.ID),
 			AppID:    types.StringValue(intent.AppID),
@@ -275,6 +287,8 @@ func (r *intentResource) Update(ctx context.Context, req resource.UpdateRequest,
 	// NA
 
 	// Update resource state with updated items and timestamp
+	plan.ID = types.StringValue(intent.ID)
+
 	plan.Intent = intentModel{
 		ID:       types.StringValue(intent.ID),
 		AppID:    types.StringValue(intent.AppID),
