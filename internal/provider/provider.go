@@ -202,6 +202,7 @@ func (p *onosProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 func (p *onosProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewFlowsDataSource,
+		NewHostsDataSource,
 	}
 }
 

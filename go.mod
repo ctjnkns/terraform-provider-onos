@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/terraform-plugin-testing v1.5.1
 )
 
-replace github.com/ctjnkns/onosclient => ../onos-client-go/onosclient
+replace github.com/ctjnkns/onosclient => ../onos-client-go
 
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect

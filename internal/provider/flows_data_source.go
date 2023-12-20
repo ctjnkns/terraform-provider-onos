@@ -10,8 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const HostURL string = "http://localhost:8181/onos/v1"
-
 // Ensure the implementation satisfies the expected interfaces.
 var (
 	_ datasource.DataSource              = &flowsDataSource{}
