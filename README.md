@@ -1,6 +1,8 @@
 # ONOS Terraform Provider
 
-This terraform provider was started from the [Terraform Provider Scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding-framework) and the [Implement a provider with the Terraform Plugin Framework](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework/providers-plugin-framework-provider) documentation.
+This terraform provider is based on the templates provied in [Terraform Provider Scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding-framework) and the [Implement a provider with the Terraform Plugin Framework](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework/providers-plugin-framework-provider) documentation.
+
+A basic understanding of Networking, [Mininet](https://github.com/mininet/mininet/wiki/Documentation), and [ONOS](https://opennetworking.org/onos/) is assumed.
 
 ## Requirements
 
@@ -35,7 +37,7 @@ Then commit the changes to `go.mod` and `go.sum`.
 
 ### Basic Usage
 #### Intents
-The intents resource requires fields: appid, key, type, priority, one, and two. The id field is computed by onos and added to the state after receiving the value. The last_updated field is computed during terraform executions.
+The intents resource requires the fields: appid, key, type, priority, one, and two. The id field is computed by onos and added to the state after receiving the value. The last_updated field is computed during terraform executions.
 
 Configuration:
 ```hcl
@@ -377,9 +379,6 @@ Changes to Outputs:
     }
 
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-
 ```
 
 Run: `terraform apply -auto-approve` to apply the configuration:
@@ -445,7 +444,7 @@ h1-to-h2_intent = {
 }
 ```
 
-Note from the output that the id field has been computed and updated from the ONOS response.
+Notice in the output that the id field has been computed and updated from the ONOS response.
 
 Paste the following command in the terminal to retrieve the intents from ONOS and confirm the intent was created successfully:
 
@@ -457,7 +456,7 @@ curl --request GET --url http://127.0.0.1:8181/onos/v1/intents --header 'Accept:
 {"intents":[{"type":"HostToHostIntent","id":"0x6","key":"0x100006","appId":"org.onosproject.cli","resources":["00:00:00:00:00:01/None","00:00:00:00:00:02/None"],"state":"INSTALLED"}]}
 ```
 
-**Note: if the "One" and "Two" strings do not match any hosts from your onos environmnet, the intent may fail to install. Edit the one and two strings in main.tf to match two of the hosts in your environment.**
+**Note: If the "One" and "Two" strings do not match any hosts from your onos environmnet, the intent may fail to install. Edit the one and two strings in main.tf to match two of the hosts in your environment.**
 
 From the mininet CLI, test connectivity again and confirm that the traffic between h1 and h2 is now allowed:
 
@@ -546,7 +545,7 @@ Changes to Outputs:
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
-Note that the "two" field displays an in-place update: `~ two      = "00:00:00:00:00:02/None" -> "00:00:00:00:00:03/None"`
+The "two" field displays an in-place update: `~ two      = "00:00:00:00:00:02/None" -> "00:00:00:00:00:03/None"`
 
 Run: `terraform apply -auto-approve` to apply the configuration:
 
@@ -613,7 +612,7 @@ h1-to-h2_intent = {
 }
 ```
 
-Note the state in the output now reflects the updated configuration.
+The state in the output now reflects the updated configuration.
 
 Paste the following command in the terminal to retrieve the intents from ONOS and confirm the intent was created successfully:
 
@@ -695,7 +694,7 @@ output "h2-to-h3_intent" {
 
 ```
 
-Run `terraform state list` and note that currently the only state file is "h1-to-h2":
+Run `terraform state list` and confirm that currently the only state file is "h1-to-h2":
 ```shell
 $ terraform state list
 onos_intent.h1-to-h2
@@ -703,7 +702,7 @@ onos_intent.h1-to-h2
 
 Run `terraform import onos_intent.h2-to-h3 "org.onosproject.cli,0x100007"`:
 
-Note that the first value after import matches the output value from the main.tf configuration. This determines the name terraform will use to manage the state of the intent. The next field is a comma separated string containing the appid and key of the intent. These values must match the intent that exists in ONOS since they are used to lookup and import the intent. 
+The first value after import matches the output value from the main.tf configuration. This determines the name terraform will use to manage the state of the intent. The next field is a comma separated string containing the appid and key of the intent. These values must match the intent that exists in ONOS since they are used to lookup and import the intent. 
 
 ```shell
  terraform import onos_intent.h2-to-h3 "org.onosproject.cli,0x100007terraform import onos_intent.h2-to-h3 "org.onosproject.cli,0x100007"
@@ -718,7 +717,7 @@ The resources that were imported are shown above. These resources are now in
 your Terraform state and will henceforth be managed by Terraform.
 ```
 
-Run `terraform state list` and note that both "h1-to-h2" and "h2-to-h3" are now shown.:
+Run `terraform state list` and confirm that both "h1-to-h2" and "h2-to-h3" are now shown.:
 
 ```shell
 $ terraform state list
@@ -828,8 +827,6 @@ Changes to Outputs:
     } -> null
 
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
 Run: `terraform apply -auto-approve` to apply the changes:
@@ -951,7 +948,7 @@ ok      terraform-provider-onos/internal/provider       8.354s
 ## Limitations
 Care must be taken when editing the configration for exisitng intents. Updating the "one" and "two" fields has been thouroughly tested and is stable. **The appid and key should never be edited**. Ideally these values would be computed instead of configured. Unfortunately, when a new intent is created in ONOS without specifying the key, a random key is used and that key is not returned. Without the key, there is no way to look up the intent for future operations or even confirm that it was created successfully. 
 
-In the future, the ONOS API may be updated to return the intent details (including the key) when an intent is created. A possible work around is to generate a key using a hash or some other method in the ONOS API Client library and inject that has into the Create Intent API call so that it does not have to be specified in the terraform configuration, but this is not an ideal solution and has not bee necessary yet. 
+In the future, the ONOS API may be updated to return the intent details (including the key) when an intent is created. A possible work around is to generate a key using a hash or some other method in the ONOS API Client library and inject that key into the CreateIntent() API call so that it does not have to be specified in the terraform configuration, but this is not an ideal solution and has not bee necessary yet. 
 
 ```hcl
 resource "onos_intent" "h1-to-h2" {
