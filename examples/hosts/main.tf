@@ -12,8 +12,8 @@ provider "onos" {
   password = "rocks"
 }
 
-data "onos_hosts" "edu" {}
+data "onos_hosts" "mininet" {}
 
-output "edu_hosts" {
-  value = data.onos_hosts.edu
+output "mininet_hosts" {
+  value = data.onos_hosts.mininet
 }
