@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mininet:
+    stdin_open: true
+    tty: true
+    privileged: true
+    environment:
+        - DISPLAY
+    volumes:
+        - /tmp/.X11-unix:/tmp/.X11-unix
+        - /lib/modules:/lib/modules
+    image: iwaseyusuke/mininet:ubuntu-22.04
+    container_name: mininet-terraform
+
+  onos:
+    #tty: true
+    ports:
+      - 8181:8181
+      - 8101:8101
+      - 5005:5005
+      - 830:830
+      - 9876:9876
+      - 6653:6653
+      - 6640:6640
+    container_name: onos-terraform
+    image: onosproject/onos:2.7-latest

@@ -12,8 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const IntentsURL string = "http://localhost:8181/onos/v1/intents"
-
 // Ensure the implementation satisfies the expected interfaces.
 var (
 	_ resource.Resource              = &intentResource{}
