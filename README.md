@@ -294,7 +294,7 @@ Navigate to the examples/intent directory, create a file named main.tf and paste
 terraform {
   required_providers {
     onos = {
-      source = "hashicorp.com/edu/onos"
+      source = "hashicorp.com/cjtnkns/onos"
     }
   }
   required_version = ">= 1.1.0"
@@ -537,15 +537,7 @@ Run: `terraform apply -auto-approve` to apply the configuration:
 
 ```shell
 $ terraform apply -auto-approve
-╷
-│ Warning: Provider development overrides are in effect
-│ 
-│ The following provider development overrides are set in the CLI configuration:
-│  - hashicorp.com/edu/hashicups in /home/onos/go/bin
-│  - hashicorp.com/edu/onos in /home/onos/go/bin
-│ 
-│ The behavior may therefore not match any released version of the provider and applying changes may cause the state to become incompatible with published releases.
-╵
+
 onos_intent.h1-to-h2: Refreshing state... [id=0x6]
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
@@ -729,15 +721,7 @@ rtt min/avg/max/mdev = 0.041/0.087/0.192/0.060 ms
 A `terraform plan` should show the infrastructure matches the configuration:
 ```shell
 $ terraform plan
-╷
-│ Warning: Provider development overrides are in effect
-│ 
-│ The following provider development overrides are set in the CLI configuration:
-│  - hashicorp.com/edu/hashicups in /home/onos/go/bin
-│  - hashicorp.com/edu/onos in /home/onos/go/bin
-│ 
-│ The behavior may therefore not match any released version of the provider and applying changes may cause the state to become incompatible with published releases.
-╵
+
 onos_intent.h1-to-h2: Refreshing state... [id=0xb]
 onos_intent.h2-to-h3: Refreshing state... [id=0x10]
 
