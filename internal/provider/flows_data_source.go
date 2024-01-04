@@ -211,7 +211,7 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 												Computed:    true,
 											},
 											"type": schema.StringAttribute{
-												Description: "Instructions type the flow.",
+												Description: "Instructions type for the flow.",
 												Computed:    true,
 											},
 										},
