@@ -343,7 +343,7 @@ func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest,
 
 func (r *intentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Retrieve import ID and save to id attribute
-	// Pass in the app id and key, e.g. terraform import onos_intent.edu "org.onosproject.cli,0x100005"
+	// Pass in the app id and key, e.g. terraform import onos_intent.mininet "org.onosproject.cli,0x100005"
 	idParts := strings.Split(req.ID, ",")
 
 	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
