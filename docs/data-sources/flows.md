@@ -90,4 +90,4 @@ Read-Only:
 Read-Only:
 
 - `port` (String) Instructions Port for the flow.
-- `type` (String) Instructions type the flow.
+- `type` (String) Instructions type for the flow.
