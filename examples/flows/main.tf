@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     onos = {
-      source = "hashicorp.com/edu/onos"
+      source = "hashicorp.com/ctjnkns/onos"
     }
   }
 }
@@ -12,8 +12,8 @@ provider "onos" {
   password = "rocks"
 }
 
-data "onos_flows" "edu" {}
+data "onos_flows" "mininet" {}
 
-output "edu_flows" {
-  value = data.onos_flows.edu
+output "mininet_flows" {
+  value = data.onos_flows.mininet
 }

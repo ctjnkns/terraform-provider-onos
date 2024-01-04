@@ -56,48 +56,62 @@ func (d *hostsDataSource) Metadata(_ context.Context, req datasource.MetadataReq
 // Schema defines the schema for the data source.
 func (d *hostsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "Fetches the list of hosts.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "Placeholder identifier attribute.",
+				Computed:    true,
 			},
 			"hosts": schema.ListNestedAttribute{
-				Computed: true,
+				Description: "Struct of host details.",
+				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
+							Description: "Numeric ID of the host.",
+							Computed:    true,
 						},
 						"mac": schema.StringAttribute{
-							Computed: true,
+							Description: "MAC Address of the host.",
+							Computed:    true,
 						},
 						"vlan": schema.StringAttribute{
-							Computed: true,
+							Description: "VLAN of the host.",
+							Computed:    true,
 						},
 						"innervlan": schema.StringAttribute{
-							Computed: true,
+							Description: "Inner VLAN of the host.",
+							Computed:    true,
 						},
 						"outertpid": schema.StringAttribute{
-							Computed: true,
+							Description: "Outer PID of the host.",
+							Computed:    true,
 						},
 						"configured": schema.BoolAttribute{
-							Computed: true,
+							Description: "Bool configured flag.",
+							Computed:    true,
 						},
 						"suspended": schema.BoolAttribute{
-							Computed: true,
+							Description: "Bool suspended flag.",
+							Computed:    true,
 						},
 						"ipaddresses": schema.ListAttribute{
+							Description: "List of IP addresses associated with the host.",
 							Computed:    true,
 							ElementType: types.StringType,
 						},
 						"locations": schema.ListNestedAttribute{
-							Computed: true,
+							Description: "Struct of locations associated with the host..",
+							Computed:    true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"elementid": schema.StringAttribute{
-										Computed: true,
+										Description: "String element ID of the host..",
+										Computed:    true,
 									},
 									"port": schema.StringAttribute{
-										Computed: true,
+										Description: "String port value for the host..",
+										Computed:    true,
 									},
 								},
 							},

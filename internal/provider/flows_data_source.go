@@ -81,74 +81,96 @@ func (d *flowsDataSource) Metadata(_ context.Context, req datasource.MetadataReq
 // Schema defines the schema for the data source.
 func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "Fetches the list of flows.",
 		Attributes: map[string]schema.Attribute{
 			"flows": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"appid": schema.StringAttribute{
-							Computed: true,
+							Description: "String identifier for the app that created the flow.",
+							Computed:    true,
 						},
 						"bytes": schema.Int64Attribute{
-							Computed: true,
+							Description: "Number of bytes that have traversed the flow.",
+							Computed:    true,
 						},
 						"deviceid": schema.StringAttribute{
-							Computed: true,
+							Description: "Host or device name.",
+							Computed:    true,
 						},
 						"groupid": schema.Int64Attribute{
-							Computed: true,
+							Description: "Numberic ID of the group.",
+							Computed:    true,
 						},
 						"id": schema.StringAttribute{
-							Computed: true,
+							Description: "Numberic ID of the flow.",
+							Computed:    true,
 						},
 						"ispermanent": schema.BoolAttribute{
-							Computed: true,
+							Description: "Bool value of whether the flow is permanent.",
+							Computed:    true,
 						},
 						"lastseen": schema.Int64Attribute{
-							Computed: true,
+							Description: "Last time the flow as used.",
+							Computed:    true,
 						},
 						"life": schema.Int64Attribute{
-							Computed: true,
+							Description: "Numberic life of the flow.",
+							Computed:    true,
 						},
 						"livetype": schema.StringAttribute{
-							Computed: true,
+							Description: "Live type of the flow.",
+							Computed:    true,
 						},
 						"packets": schema.Int64Attribute{
-							Computed: true,
+							Description: "Number of packets that have traversed the flow.",
+							Computed:    true,
 						},
 						"priority": schema.Int64Attribute{
-							Computed: true,
+							Description: "Priority of the flow.",
+							Computed:    true,
 						},
 						"state": schema.StringAttribute{
-							Computed: true,
+							Description: "State of the flow.",
+							Computed:    true,
 						},
 						"tableid": schema.Int64Attribute{
-							Computed: true,
+							Description: "Table ID of the flow.",
+							Computed:    true,
 						},
 						"tablename": schema.StringAttribute{
-							Computed: true,
+							Description: "Table Name of the flow.",
+							Computed:    true,
 						},
 						"timeout": schema.Int64Attribute{
-							Computed: true,
+							Description: "Timeout of the flow.",
+							Computed:    true,
 						},
 						"selector": schema.SingleNestedAttribute{
-							Computed: true,
+							Description: "Selector information flor the flow.",
+							Computed:    true,
 							Attributes: map[string]schema.Attribute{
 								"criteria": schema.ListNestedAttribute{
-									Computed: true,
+									Description: "Criteria the flow.",
+									Computed:    true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
 											"ethtype": schema.StringAttribute{
-												Computed: true,
+												Description: "Ethernet type of the flow.",
+												Computed:    true,
 											},
 											"mac": schema.StringAttribute{
-												Computed: true,
+												Description: "Mac associated with the flow.",
+												Computed:    true,
 											},
 											"port": schema.Int64Attribute{
-												Computed: true,
+												Description: "Port for the flow.",
+												Computed:    true,
 											},
 											"type": schema.StringAttribute{
-												Computed: true,
+												Description: "Type of flow.",
+												Computed:    true,
 											},
 										},
 									},
@@ -156,33 +178,41 @@ func (d *flowsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 							},
 						},
 						"treatment": schema.SingleNestedAttribute{
-							Computed: true,
+							Description: "Treatment details for the flow.",
+							Computed:    true,
 							Attributes: map[string]schema.Attribute{
 								"cleardeferred": schema.BoolAttribute{
-									Computed: true,
+									Description: "Bool value for Clear Deferred.",
+									Computed:    true,
 								},
 								"deferred": schema.ListNestedAttribute{
-									Computed: true,
+									Description: "Deferred information for the flow.",
+									Computed:    true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
 											"port": schema.StringAttribute{
-												Computed: true,
+												Description: "Deferred port value for flow.",
+												Computed:    true,
 											},
 											"type": schema.StringAttribute{
-												Computed: true,
+												Description: "Deferred type value for the flow.",
+												Computed:    true,
 											},
 										},
 									},
 								},
 								"instructions": schema.ListNestedAttribute{
-									Computed: true,
+									Description: "Instructions for the flow.",
+									Computed:    true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
 											"port": schema.StringAttribute{
-												Computed: true,
+												Description: "Instructions Port for the flow.",
+												Computed:    true,
 											},
 											"type": schema.StringAttribute{
-												Computed: true,
+												Description: "Instructions type for the flow.",
+												Computed:    true,
 											},
 										},
 									},
