@@ -3,7 +3,7 @@ module terraform-provider-onos
 go 1.21.3
 
 require (
-	github.com/ctjnkns/onosclient v0.1.0
+	github.com/ctjnkns/onos-client-go v0.1.1
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
 	github.com/hashicorp/terraform-plugin-framework v1.4.1
 	github.com/hashicorp/terraform-plugin-go v0.19.0
@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/terraform-plugin-testing v1.5.1
 )
 
-replace github.com/ctjnkns/onosclient => ../onos-client-go
+//replace github.com/ctjnkns/onosclient => ../onos-client-go
 
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect

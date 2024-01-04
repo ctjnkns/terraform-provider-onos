@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ctjnkns/onosclient"
+	onosclient "github.com/ctjnkns/onos-client-go"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
