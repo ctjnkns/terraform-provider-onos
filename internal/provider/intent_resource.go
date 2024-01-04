@@ -16,7 +16,7 @@ import (
 var (
 	_ resource.Resource              = &intentResource{}
 	_ resource.ResourceWithConfigure = &intentResource{}
-	//_ resource.ResourceWithImportState = &intentResource{}
+	//_ resource.ResourceWithImportState = &intentResource{}.
 )
 
 // intentResource is the resource implementation.
@@ -169,12 +169,12 @@ func (r *intentResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	// Generate API request body from plan
 	intent := onosclient.Intent{
-		AppID:    string(plan.Intent.AppID.ValueString()),
-		Key:      string(plan.Intent.Key.ValueString()),
-		Type:     string(plan.Intent.Type.ValueString()),
+		AppID:    plan.Intent.AppID.ValueString(),
+		Key:      plan.Intent.Key.ValueString(),
+		Type:     plan.Intent.Type.ValueString(),
 		Priority: int(plan.Intent.Priority.ValueInt64()),
-		One:      string(plan.Intent.One.ValueString()),
-		Two:      string(plan.Intent.Two.ValueString()),
+		One:      plan.Intent.One.ValueString(),
+		Two:      plan.Intent.Two.ValueString(),
 	}
 
 	// Create new intent
@@ -221,8 +221,8 @@ func (r *intentResource) Read(ctx context.Context, req resource.ReadRequest, res
 
 	// Get refreshed intent value from Onos
 	intent := onosclient.Intent{
-		AppID: string(state.Intent.AppID.ValueString()),
-		Key:   string(state.Intent.Key.ValueString()),
+		AppID: state.Intent.AppID.ValueString(),
+		Key:   state.Intent.Key.ValueString(),
 	}
 	intent, err := r.client.GetIntent(intent)
 	if err != nil {
@@ -262,12 +262,12 @@ func (r *intentResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	// Generate API request body from plan
 	intent := onosclient.Intent{
-		AppID:    string(plan.Intent.AppID.ValueString()),
-		Key:      string(plan.Intent.Key.ValueString()),
-		Type:     string(plan.Intent.Type.ValueString()),
+		AppID:    plan.Intent.AppID.ValueString(),
+		Key:      plan.Intent.Key.ValueString(),
+		Type:     plan.Intent.Type.ValueString(),
 		Priority: int(plan.Intent.Priority.ValueInt64()),
-		One:      string(plan.Intent.One.ValueString()),
-		Two:      string(plan.Intent.Two.ValueString()),
+		One:      plan.Intent.One.ValueString(),
+		Two:      plan.Intent.Two.ValueString(),
 	}
 
 	// Update existing intent
@@ -316,8 +316,8 @@ func (r *intentResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 	//convert to model
 	intent := onosclient.Intent{
-		AppID: string(state.Intent.AppID.ValueString()),
-		Key:   string(state.Intent.Key.ValueString()),
+		AppID: state.Intent.AppID.ValueString(),
+		Key:   state.Intent.Key.ValueString(),
 	}
 
 	// Delete existing intent
