@@ -90,9 +90,11 @@ func (r *intentResource) Metadata(_ context.Context, req resource.MetadataReques
 // Schema defines the schema for the data source.
 func (r *intentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "Manages an intent.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "Numeric identifier of the intent.",
+				Computed:    true,
 				/*
 					PlanModifiers: []planmodifier.String{
 						stringplanmodifier.UseStateForUnknown(),
@@ -100,35 +102,43 @@ func (r *intentResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 				*/
 			},
 			"last_updated": schema.StringAttribute{
-				Computed: true,
+				Description: "Timestamp of the last Terraform update of the intent.",
+				Computed:    true,
 			},
 			"intent": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
-						Computed: true,
+						Description: "ID of the intent.",
+						Computed:    true,
 					},
 					"appid": schema.StringAttribute{
-						Required: true,
+						Description: "ID of the app that created the intent.",
+						Required:    true,
 					},
 					"key": schema.StringAttribute{
-						Required: true,
+						Description: "Key ID of the intent.",
+						Required:    true,
 					},
 					"type": schema.StringAttribute{
-						Required: true,
+						Description: "Type of intent.",
+						Required:    true,
 					}, /*
 						"resources": schema.ListAttribute{
 							ElementType: types.StringType,
 							Required:    true,
 						},*/
 					"priority": schema.Int64Attribute{
-						Required: true,
+						Description: "Numeric priority of the intent.",
+						Required:    true,
 					},
 					"one": schema.StringAttribute{
-						Required: true,
+						Description: "First host name for the intent",
+						Required:    true,
 					},
 					"two": schema.StringAttribute{
-						Required: true,
+						Description: "Second host name for the intent",
+						Required:    true,
 					},
 				},
 			},
