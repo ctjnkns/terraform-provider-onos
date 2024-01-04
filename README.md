@@ -19,20 +19,6 @@ A basic understanding of Networking, [Mininet](https://github.com/mininet/minine
 go install
 ```
 
-## Adding Dependencies
-
-This provider uses [Go modules](https://github.com/golang/go/wiki/Modules).
-Please see the Go documentation for the most up to date information about using Go modules.
-
-To add a new dependency `github.com/author/dependency` to your Terraform provider:
-
-```shell
-go get github.com/author/dependency
-go mod tidy
-```
-
-Then commit the changes to `go.mod` and `go.sum`.
-
 ## Using the provider
 
 ### Basic Usage
@@ -200,7 +186,7 @@ Changes to Outputs:
 ```
 
 
-### Example Using Docker Containers running on Linux (Ubuntu 22.04.3 LTS)
+## Example Using Docker Containers running on Linux (Ubuntu 22.04.3 LTS)
 These examples require a current version of [go](https://go.dev/doc/install) and [docker](https://docs.docker.com/engine/install/ubuntu/).
 
 #### Docker Environment Setup
