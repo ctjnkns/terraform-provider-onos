@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     onos = {
-      source = "hashicorp.com/ctjnkns/onos"
+      source = "ctjnkns/onos"
     }
   }
   required_version = ">= 1.1.0"
