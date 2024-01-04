@@ -50,7 +50,7 @@ type flowsModel struct {
 	Treatment   flowsTreatmentModel `tfsdk:"treatment"`
 }
 
-// flowsSelectorModel maps flow ingredients data
+// flowsSelectorModel maps flow ingredients data.
 type flowsSelectorModel struct {
 	Criteria []flowsSelectorCriteriaModel `tfsdk:"criteria"`
 }
