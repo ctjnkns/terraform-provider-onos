@@ -294,7 +294,7 @@ Navigate to the examples/intent directory, create a file named main.tf and paste
 terraform {
   required_providers {
     onos = {
-      source = "hashicorp.com/cjtnkns/onos"
+      source = "ctjnkns/onos"
     }
   }
   required_version = ">= 1.1.0"

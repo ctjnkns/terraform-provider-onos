@@ -1,0 +1,24 @@
+# This file is maintained automatically by "terraform init".
+# Manual edits may be lost in future updates.
+
+provider "registry.terraform.io/ctjnkns/onos" {
+  version = "0.1.0"
+  hashes = [
+    "h1:P343+VplRgMdJxtlrAw7/1foWu6bw7ej6DcaTWGB+Hk=",
+    "zh:2136c6dfb66eea26d349f302aecc08da1d9d09b11cc1e84068f1c65f07c20afd",
+    "zh:2445cb795d325efd7897d9de60501c58aa36087a32223bd4b346d045711a8369",
+    "zh:2584b8bcb3b3a79c73fbffbce3204cacc9918813e473cb12b96928c764bde639",
+    "zh:3be57f69ac70f6420f6d47e768aec2f019246da49f48e586c5cb4c7976823872",
+    "zh:6601e2c3ea95c7d5f4a14613b9e92f55c4fe82ff47b47152a2c6850c592e3fda",
+    "zh:669190a351e66e26b8972c947100fee3ef19414dcc179b0dcb81a9e21814d44d",
+    "zh:7de5912cf7c01b405e86b7dcbeac94f0910cbaf7f0bfc30e8e721e9b80a6a859",
+    "zh:852d8c640a83bafbc402b668c2dc9a68db09843283fa6dffbf522574b5673b13",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
+    "zh:916a2e49f1ff65e266775021a185b2886b97475b0b0d53e7a06811462666f44c",
+    "zh:99e34fb5dd99a684dafbfbb0328536d7544a4a65a79deb589daaab408f58ef7a",
+    "zh:a92b56eb5a6731b2e40b35b086d2c16228b23d41e872703c678ef4ed7d98e963",
+    "zh:ac44f2e1293a6c8900b161ba46e8664a4b27e391806c4386f891a22392aa6d00",
+    "zh:d59f4d8e2f85ae005fe4ed999417faae20cbaeaf5c498e6469acc2a54bd2caf7",
+    "zh:d60ff065029a02289163e2085114ca6993239de3eb043f01fbf15c438f885f52",
+  ]
+}
