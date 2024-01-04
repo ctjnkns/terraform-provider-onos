@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/ctjnkns/onosclient"
+	onosclient "github.com/ctjnkns/onos-client-go"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
